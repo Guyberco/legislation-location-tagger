@@ -1,5 +1,5 @@
 import unittest
-import src.XmlHandler as XmlHandler
+import src.xmlHandler as XmlHandler
 
 
 class TesTCreateLocationOpenTag(unittest.TestCase):
