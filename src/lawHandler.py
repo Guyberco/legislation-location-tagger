@@ -6,7 +6,7 @@ def initializeDataBase(file):
     for line in file:
         columns = line.split()
         if(isLocationOcc(columns)):
-            dataBase.update({columns[0] : {"counter" : 0, "indexOfOoccurrence": [] }})
+            dataBase.update({columns[0] : {"counter": 0, "instancesToTag": []}})
     # print(dataBase)
 
 def updateOccurances(file):
@@ -28,7 +28,7 @@ def isLocationOcc(columns):
     return len(columns) >= 3 and columns[2] == "I_LOC"
 
 def apppendLocationOcc(word, counter):
-    word["indexOfOoccurrence"].append(counter)
+    word["instancesToTag"].append(counter)
        
 def createDataOfLocs(FilePath):
     # file =  open(FilePath, mode='r',encoding='UTF-8').read()
