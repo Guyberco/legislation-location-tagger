@@ -3,9 +3,8 @@ import re
 import src.stringHelper as stringHelper
 
 
-def tagDesignatedLocations(string, db, locationToTag):
+def tagDesignatedLocations(string, locationObj, locationToTag):
     index = 0
-    locationObj = db.getValueByKey(locationToTag)
     instancesToTag = locationObj["instancesToTag"]
     locationToTagLen = len(locationToTag)
 
