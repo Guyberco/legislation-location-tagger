@@ -6,8 +6,12 @@ class DataBase:
 
     def getDBCopy(self):
         return copy.deepcopy(self.db)
+        
     def getValueByKey(self, location):
         return self.db[location]
+
+    def getKeys(self):
+        return self.db.keys()
 
     def createNewLocationEntry(self, location):
         self.db.update({location: {"counter": 0, "instancesToTag": []}})
@@ -37,4 +41,5 @@ def updateWord(word, columns):
 
 def isLocationOcc(columns):
     return len(columns) >= 3 and columns[2] == "I_LOC"
+
 

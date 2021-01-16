@@ -1,6 +1,8 @@
 import xml.etree.ElementTree as ET
 import re
-import src.stringHelper as stringHelper
+import stringHelper as stringHelper
+# from lawHandler import dataBase
+from DateBase import updateWord, isLocationOcc, DataBase
 
 
 def tagDesignatedLocations(string, locationObj, locationToTag):
@@ -40,9 +42,49 @@ def createLocationOpenTag(location):
     else:
         return "<location>"
 
-# def createXmlFileFromTree(filePath, tree):
-#     openedFile = open(filePath + ".xml", 'w')
-#     tree.write(filePath + ".xml", encoding='UTF-8')
+
+def handleXml(filePath):
+    ET.register_namespace('', "http://docs.oasis-open.org/legaldocml/ns/akn/3.0")  # ENV VARIABLE
+    fileTree = ET.parse(filePath)
+
+    dataBase = DataBase()
+    dataBase.put({'היצירה': {'counter': 3, 'instancesToTag': [0, 1, 5]}})
+    dataBase.clearAllCounters()
+
+    fileRoot = fileTree.getroot()
+    mapKeys = dataBase.getKeys() 
+    for key in mapKeys:
+        traverseTree(fileRoot, dataBase.getValueByKey(key), key)
+    createXmlFileFromTree("../laws/newtemp",fileTree)
+
+
+def createXmlFileFromTree(filePath, tree):
+    openedFile = open(filePath + ".xml", 'w')
+    tree.write(filePath + ".xml", encoding='UTF-8')
+
+
+def traverseTree(node, locationObj, locationToTag):
+    if node.text is not None:
+        node.text = tagDesignatedLocations(node.text, locationObj, locationToTag)
+    for child in node:
+        traverseTree(child, locationObj,locationToTag)
+    if(node.tail is not None):
+        node.tail = tagDesignatedLocations(node.tail, locationObj, locationToTag)
+
+
+# def traverseTree(node):
+#     innerText = node.text 
+#     if innerText is not None:
+#          print(innerText)
+#     for child in node:
+#         traverseTree(child)
+#     if(node.tail is not None):
+#         print(node.tail)
+
+
+
+handleXml("../laws/main.xml")
+
 
 
 # def extractTextFromXml(path, fileName):

@@ -1,6 +1,5 @@
 import codecs
-
-from src.DateBase import updateWord, isLocationOcc, DataBase
+from DateBase import updateWord, isLocationOcc, DataBase
 
 dataBase = DataBase()
 
@@ -26,6 +25,7 @@ def createDataOfLocs(FilePath):
     initializeDataBase(file)
     file = codecs.open(FilePath, 'r', 'utf8')
     updateOccurances(file)
+    dataBase.clearAllCounters()
    
 
-createDataOfLocs("../TextFiles/output/out1.txt")
+# createDataOfLocs("../TextFiles/output/out1.txt")
