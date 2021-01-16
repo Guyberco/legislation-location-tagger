@@ -2,22 +2,24 @@ import unittest
 import src.xmlHandler as XmlHandler
 import copy
 
+from src.DateBase import DataBase
+
 
 class TestTagDesignatedLocations(unittest.TestCase):
 
-    data_base = {
-        'jerusalem': {'counter': 0, 'instancesToTag': [0, 1, 2]},
-        'תל אביב': {'counter': 0, 'instancesToTag': [0, 2]},
-        'beer sheve': {'counter': 0, 'instancesToTag': [0]},
-        'Yavne': {'counter': 0, 'instancesToTag': [0, 1]},
-        'rehovot': {'counter': 0, 'instancesToTag': [0, 2]},
-        'arad': {'counter': 0, 'instancesToTag': [1]},
-        'Bat yam': {'counter': 0, 'instancesToTag': [2, 4]},
-        'tel aviv': {'counter': 0, 'instancesToTag': []},
-        'Ramat gan': {'counter': 2, 'instancesToTag': [2, 4, 5]},
-    }
+    data_base = DataBase()
+    data_base.put({'jerusalem': {'counter': 0, 'instancesToTag': [0, 1, 2]}})
+    data_base.put({'תל אביב': {'counter': 0, 'instancesToTag': [0, 2]}})
+    data_base.put({'beer sheve': {'counter': 0, 'instancesToTag': [0]}})
+    data_base.put({'Yavne': {'counter': 0, 'instancesToTag': [0, 1]}})
+    data_base.put({'rehovot': {'counter': 0, 'instancesToTag': [0, 2]}})
+    data_base.put({'arad': {'counter': 0, 'instancesToTag': [1]}})
+    data_base.put({'Bat yam': {'counter': 0, 'instancesToTag': [2, 4]}})
+    data_base.put({'tel aviv': {'counter': 0, 'instancesToTag': []}})
+    data_base.put({'Ramat gan': {'counter': 2, 'instancesToTag': [2, 4, 5]}})
 
-    # One word location
+
+    # # One word location
     def test_oneWordLocation_not_exist(self):
         string = 'אם זו יצירה דרמטית, להפוך אותה לרומן או לכל יצירה אחרת שאינה דרמטית'
         db = copy.deepcopy(self.data_base)
