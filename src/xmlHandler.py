@@ -3,7 +3,7 @@ import re
 import stringHelper as stringHelper
 # from lawHandler import dataBase
 from DateBase import updateWord, isLocationOcc, DataBase
-
+import codecs
 
 def tagDesignatedLocations(string, locationObj, locationToTag):
     index = 0
@@ -43,18 +43,13 @@ def createLocationOpenTag(location):
         return "<location>"
 
 
-def handleXml(filePath):
+def handleXml(filePath, db):
     ET.register_namespace('', "http://docs.oasis-open.org/legaldocml/ns/akn/3.0")  # ENV VARIABLE
     fileTree = ET.parse(filePath)
-
-    dataBase = DataBase()
-    dataBase.put({'היצירה': {'counter': 3, 'instancesToTag': [0, 1, 5]}})
-    dataBase.clearAllCounters()
-
     fileRoot = fileTree.getroot()
-    mapKeys = dataBase.getKeys() 
+    mapKeys = db.getKeys() 
     for key in mapKeys:
-        traverseTree(fileRoot, dataBase.getValueByKey(key), key)
+        traverseTree(fileRoot, db.getValueByKey(key), key)
     createXmlFileFromTree("../laws/newtemp",fileTree)
 
 
@@ -72,6 +67,28 @@ def traverseTree(node, locationObj, locationToTag):
         node.tail = tagDesignatedLocations(node.tail, locationObj, locationToTag)
 
 
+
+
+# handleXml("../laws/main.xml")
+
+# dataBase = DataBase()
+# dataBase.put({'מזל': {'counter': 1, 'instancesToTag': [0]}})
+# dataBase.clearAllCounters()
+# tagDesignatedLocations(node.text, locationObj, locationToTag)
+
+# createXmlFileFromTree("../laws/newtemp",fileTree)
+
+
+def extractTextFromXml(path, fileName):
+    file = open(path + fileName + ".xml", mode='r', encoding='UTF-8').read()
+    text = re.sub('<[^<]+>', "", file)
+    with open("untagged" + fileName + ".txt", "w+", encoding='UTF-8') as f:
+        f.write(text)
+
+extractTextFromXml("../laws/", "main")
+
+
+
 # def traverseTree(node):
 #     innerText = node.text 
 #     if innerText is not None:
@@ -81,45 +98,3 @@ def traverseTree(node, locationObj, locationToTag):
 #     if(node.tail is not None):
 #         print(node.tail)
 
-
-
-handleXml("../laws/main.xml")
-
-
-
-# def extractTextFromXml(path, fileName):
-#     file = open(path + fileName + ".xml", mode='r', encoding='UTF-8').read()
-#     text = re.sub('<[^<]+>', "", file)
-#     with open("" + fileName + ".txt", "w+", encoding='UTF-8') as f:
-#         f.write(text)
-#
-#
-# def updateXmlFile(filePath):
-#     # file = open(filePath, mode='r', encoding='UTF-8').read()
-#     # with open("deletelater.txt", "w+", encoding='UTF-8') as f:
-#     #    f.write(file)
-#     # print(file)
-#     fileTree = ET.parse(filePath)
-#     fileRoot = fileTree.getroot()
-#     for child in fileRoot:
-#         print(child.tail)
-#     print("ddda")
-#     # for item in fileRoot:
-#     #     print(item)
-#     # xmlstr = ET.tostring(fileRoot, encoding='utf8', method='xml')
-#     # print(xmlstr)
-#
-#     # fileTree = ET.parse(filePath)
-#     # # print(fileTree[2])
-#     # # for key, value in fileTree[2]:
-#     # #     print(key, value)
-#     # # for node in fileTree.iter():
-#     # #     print("tag is",node.tag)
-#     # #     print("attr" ,node.attrib)
-#     # fileRoot = fileTree.getroot()
-#     # for item in fileRoot:
-#     #     print(item)
-#
-#
-# # extractTextFromXml("../laws/", "main")
-# updateXmlFile("../laws/main.xml")
