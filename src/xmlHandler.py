@@ -43,19 +43,19 @@ def createLocationOpenTag(location):
         return "<location>"
 
 
-def handleXml(filePath, db):
+def handleXml(path, pathToSave, xmlFileName, db):
     ET.register_namespace('', "http://docs.oasis-open.org/legaldocml/ns/akn/3.0")  # ENV VARIABLE
-    fileTree = ET.parse(filePath)
+    fileTree = ET.parse(f"{path}/{xmlFileName}")
     fileRoot = fileTree.getroot()
     mapKeys = db.getKeys()
     for key in mapKeys:
         traverseTree(fileRoot, db.getValueByKey(key), key)
-    createXmlFileFromTree("../../../laws/newtemp", fileTree)
+    createXmlFileFromTree(pathToSave, xmlFileName, fileTree)
 
 
-def createXmlFileFromTree(filePath, tree):
-    openedFile = open(filePath + ".xml", 'w')
-    tree.write(filePath + ".xml", encoding='UTF-8')
+def createXmlFileFromTree(path, xmlFileName, tree):
+    # openedFile = open(f"{path}/{xmlFileName}", 'w')
+    tree.write(f"{path}/locationTagged_{xmlFileName}", encoding='UTF-8')
 
 
 def traverseTree(node, locationObj, locationToTag):
@@ -79,11 +79,14 @@ def traverseTree(node, locationObj, locationToTag):
 # createXmlFileFromTree("../laws/newtemp",fileTree)
 
 
-def extractTextFromXml(path, fileName):
-    file = open(path + fileName + ".xml", mode='r', encoding='UTF-8').read()
-    text = re.sub('<[^<]+>', "", file)
-    with open("untagged" + fileName + ".txt", "w+", encoding='UTF-8') as f:
+def extractTextFromXml(path, pathToSave, fileName):
+    file = open(f"{path}/{fileName}.xml", mode='r', encoding='UTF-8')
+    text = re.sub('<[^<]+>', "", file.read())
+    file.close()
+
+    with open(f"{pathToSave}/untagged_{fileName}.txt", "w+", encoding='UTF-8') as f:
         f.write(text)
+        f.close()
 
 # extractTextFromXml("../laws/", "main")
 

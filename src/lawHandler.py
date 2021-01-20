@@ -17,15 +17,14 @@ def updateOccurances(file, dataBase):
                 updateWord(word, columns)
 
 
-def createDataOfLocs(FilePath):
+def createDataOfLocs(filePath):
     dataBase = DataBase()
     # file =  open(FilePath, mode='r',encoding='UTF-8').read()
-    file = codecs.open(FilePath, 'r', 'utf8')
+    file = codecs.open(filePath, 'r', 'utf8')
     initializeDataBase(file, dataBase)
-    file = codecs.open(FilePath, 'r', 'utf8')
+    file.close()
+    file = codecs.open(filePath, 'r', 'utf8')   # It is necessary to reopen the file
     updateOccurances(file, dataBase)
+    file.close()
     dataBase.clearAllCounters()
     return dataBase
-   
-
-# createDataOfLocs("../TextFiles/output/out1.txt")
