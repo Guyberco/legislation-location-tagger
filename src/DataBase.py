@@ -40,6 +40,11 @@ def updateWord(word, columns):
 
 
 def isLocationOcc(columns):
-    return len(columns) >= 3 and columns[2] == "I_LOC"
+    if len(columns) >= 4 and columns[4] == "properName":
+        for word in columns[3:]:
+            if word == "I_LOC":
+                return True
+    return False
+
 
 

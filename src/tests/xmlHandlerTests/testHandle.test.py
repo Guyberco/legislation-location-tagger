@@ -5,7 +5,7 @@ from src.xmlHandler import handleXml
 
 
 class TesTCreateLocationOpenTag(unittest.TestCase):
-    srcOutput = "../../../TextFiles/output/untaggedmain.txt"
+    srcOutput = "../../../TextFiles/output/untagged2001438.txt"
     db = createDataOfLocs(srcOutput)
     print(db.getDBCopy())
     def test_handleXml(self):

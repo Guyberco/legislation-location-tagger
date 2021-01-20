@@ -5,7 +5,7 @@ def initializeDataBase(file, dataBase):
     for line in file:
         columns = line.split()
         if(isLocationOcc(columns)):
-            dataBase.createNewLocationEntry(columns[0])
+            dataBase.createNewLocationEntry(columns[1])
 
 
 def updateOccurances(file, dataBase):
