@@ -8,7 +8,7 @@ class DataBase:
         return copy.deepcopy(self.db)
         
     def getValueByKey(self, location):
-        return self.db[location]
+        return self.db.get(location)
 
     def getKeys(self):
         return self.db.keys()

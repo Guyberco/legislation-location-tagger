@@ -1,6 +1,6 @@
 import unittest
 import src.stringHelper as stringHelper
-from src.DateBase import DataBase
+from src.DataBase import DataBase
 import copy
 
 class TestDataBase(unittest.TestCase):

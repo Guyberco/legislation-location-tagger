@@ -2,7 +2,7 @@ import unittest
 import src.xmlHandler as XmlHandler
 import copy
 
-from src.DateBase import DataBase
+from src.DataBase import DataBase
 
 
 class TestTagDesignatedLocations(unittest.TestCase):

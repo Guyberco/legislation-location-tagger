@@ -1,16 +1,14 @@
 import codecs
-from DateBase import updateWord, isLocationOcc, DataBase
+from src.DataBase import updateWord, isLocationOcc, DataBase
 
-dataBase = DataBase()
-
-def initializeDataBase(file):
+def initializeDataBase(file, dataBase):
     for line in file:
         columns = line.split()
         if(isLocationOcc(columns)):
             dataBase.createNewLocationEntry(columns[0])
 
 
-def updateOccurances(file):
+def updateOccurances(file, dataBase):
     for line in file:
         columns = line.split()
         if len(columns) >= 1:
@@ -20,12 +18,14 @@ def updateOccurances(file):
 
 
 def createDataOfLocs(FilePath):
+    dataBase = DataBase()
     # file =  open(FilePath, mode='r',encoding='UTF-8').read()
     file = codecs.open(FilePath, 'r', 'utf8')
-    initializeDataBase(file)
+    initializeDataBase(file, dataBase)
     file = codecs.open(FilePath, 'r', 'utf8')
-    updateOccurances(file)
+    updateOccurances(file, dataBase)
     dataBase.clearAllCounters()
+    return dataBase
    
 
 # createDataOfLocs("../TextFiles/output/out1.txt")
