@@ -1,4 +1,5 @@
 import copy
+from src.dictionary import loc_dictionray
 
 class DataBase:
     def __init__(self):
@@ -40,10 +41,18 @@ def updateWord(word, columns):
 
 
 def isLocationOcc(columns):
+    """
+    check if the given list of strings (represents an entry in the NRE output) is a location
+    returns true the 4th element is "properName", the word(first element) is contained in the loc dictionary
+    and contains an element "I_LOC" (should be located from the 4th index)
+    :param columns: list of strings
+    :return: BOOLEAN
+    """
     if len(columns) >= 4 and columns[4] == "properName":
-        for word in columns[3:]:
-            if word == "I_LOC":
-                return True
+        if loc_dictionray.checkValue(columns[1]):
+            for word in columns[3:]:
+                if word == "I_LOC":
+                    return True
     return False
 
 

@@ -12,6 +12,8 @@ class TestGoogleTrans(unittest.TestCase):
             self.assertEqual(True, googleT.checkIsLocationInTranslate(text))
         for text in not_loc_texts:
             self.assertEqual(False,  googleT.checkIsLocationInTranslate(text))
+        self.assertEqual(True, googleT.checkIsLocationInTranslate("אני הולך לחולון"))
+
 
 
 
