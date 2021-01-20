@@ -4,8 +4,11 @@ class DataBase:
     def __init__(self):
         self.db = {}
 
-    def getDBCopy(self):
+    def getDictionaryDeepCopy(self):
         return copy.deepcopy(self.db)
+
+    def getDBDeepCopy(self):
+        return copy.deepcopy(self)
         
     def getValueByKey(self, location):
         return self.db.get(location)
