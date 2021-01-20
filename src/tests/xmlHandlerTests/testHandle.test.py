@@ -1,18 +1,17 @@
-import sys
-#  sys.path.append("C:/Users/zemse/Desktop/school/digital sc/final project/legislation-location-tagger/src")
-# sys.path.append("../../")
-# import parent.xmlHandler
 import unittest
-# from ...src import xmlHandler
+import copy
+from src.lawHandler import createDataOfLocs
 from src.xmlHandler import handleXml 
-from lawHandler import createDataOfLocs
+
 
 class TesTCreateLocationOpenTag(unittest.TestCase):
-    srcOutput = "../../TextFiles/output"
-    db = createDataOfLocs(srcOutput+"/untaggedmain.txt")
-    
-    def handleXml(self):
-        handleXml("../../laws/main.xml", self.db.getDBCopy())
+    srcOutput = "../../../TextFiles/output/untaggedmain.txt"
+    db = createDataOfLocs(srcOutput)
+    print(db.getDBCopy())
+    def test_handleXml(self):
+        db = copy.deepcopy(self.db)
+        handleXml("../../../laws/main.xml", db)
+
     
 
 

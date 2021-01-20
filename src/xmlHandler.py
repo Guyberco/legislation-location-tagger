@@ -1,8 +1,8 @@
 import xml.etree.ElementTree as ET
 import re
-import stringHelper as stringHelper
+import src.stringHelper as stringHelper
 # from lawHandler import dataBase
-from DateBase import updateWord, isLocationOcc, DataBase
+from src.DataBase import updateWord, isLocationOcc, DataBase
 import codecs
 
 def tagDesignatedLocations(string, locationObj, locationToTag):
@@ -47,10 +47,10 @@ def handleXml(filePath, db):
     ET.register_namespace('', "http://docs.oasis-open.org/legaldocml/ns/akn/3.0")  # ENV VARIABLE
     fileTree = ET.parse(filePath)
     fileRoot = fileTree.getroot()
-    mapKeys = db.getKeys() 
+    mapKeys = db.getKeys()
     for key in mapKeys:
         traverseTree(fileRoot, db.getValueByKey(key), key)
-    createXmlFileFromTree("../laws/newtemp",fileTree)
+    createXmlFileFromTree("../../../laws/newtemp", fileTree)
 
 
 def createXmlFileFromTree(filePath, tree):
@@ -85,7 +85,7 @@ def extractTextFromXml(path, fileName):
     with open("untagged" + fileName + ".txt", "w+", encoding='UTF-8') as f:
         f.write(text)
 
-extractTextFromXml("../laws/", "main")
+# extractTextFromXml("../laws/", "main")
 
 
 
