@@ -11,11 +11,17 @@ class DataBase:
     def getValueByKey(self, location):
         return self.db.get(location)
 
+    def getCounterByKey(self, location):
+        return self.db.get(location).get("counter")
+
     def getKeys(self):
         return self.db.keys()
 
-    def createNewLocationEntry(self, location):
-        self.db.update({location: {"counter": 0, "instancesToTag": []}})
+    def createNewLocationEntry(self, location, wordInText):
+        if location == "א\"י":
+            self.db.update({wordInText: {"counter": 0, "instancesToTag": [], "tagToAdd": "ישראל"}})
+        else:
+            self.db.update({wordInText: {"counter": 0, "instancesToTag": [], "tagToAdd": location}})
 
     def put(self, entry):
         self.db.update(entry)
@@ -29,8 +35,15 @@ class DataBase:
         for key in self.db.keys():
             self.clearCounter(key)
 
+    def increaseCounter(self, word):
+        location = self.db.get(word)
+        if location:
+            location["counter"] += 1
+
 def apppendLocationOcc(word, counter):
     word["instancesToTag"].append(counter)
+
+
 
 
 def updateWord(word, columns):
