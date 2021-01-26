@@ -67,15 +67,14 @@ def updateOccurances(file, dataBase):
         indx = checkForLocKey(dataBase, lines, indx)
 
 
-def createDataOfLocs(FilePath):
+def createDataOfLocs(filePath):
     dataBase = DataBase()
     # file =  open(FilePath, mode='r',encoding='UTF-8').read()
-    file = codecs.open(FilePath, 'r', 'utf8')
-    initializeDataBase(file, dataBase)              #TODO add also complex words like bear - sheva or tel aviv
-    file = codecs.open(FilePath, 'r', 'utf8')
-    updateOccurances(file, dataBase)                #TODO updateWord meathod need to be changed
+    file = codecs.open(filePath, 'r', 'utf8')
+    initializeDataBase(file, dataBase)
+    file.close()
+    file = codecs.open(filePath, 'r', 'utf8')   # It is necessary to reopen the file
+    updateOccurances(file, dataBase)
+    file.close()
     dataBase.clearAllCounters()
     return dataBase
-
-
-# createDataOfLocs("../TextFiles/output/out1.txt")

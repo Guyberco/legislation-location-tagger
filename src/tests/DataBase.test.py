@@ -33,6 +33,21 @@ class TestDataBase(unittest.TestCase):
         db = copy.deepcopy(self.data_base)
         self.assertEqual({'counter': 3, 'instancesToTag': [0, 1, 2]}, db.getValueByKey(key))
 
+    def test_createNewDataBase(self):
+        db = DataBase()
+        self.assertEqual({}, db.getDictionaryDeepCopy())
+
+    def test_createNewLocationEntry(self):
+        db = DataBase()
+        db.createNewLocationEntry('tel aviv')
+        self.assertIsNotNone(db.getValueByKey('tel aviv'))
+
+    def test_put(self):
+        db = DataBase()
+        db.put({'tel aviv': {'counter': 0, 'instancesToTag': []}})
+        self.assertNotEqual({}, db.getDictionaryDeepCopy())
+        self.assertIsNotNone(db.getValueByKey('tel aviv'))
+
 
 
 if __name__ == '__main__':
