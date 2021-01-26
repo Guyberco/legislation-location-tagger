@@ -5,12 +5,12 @@ from src.xmlHandler import handleXml
 
 
 class TesTCreateLocationOpenTag(unittest.TestCase):
-    srcOutput = "../../../TextFiles/output/untaggedmain.txt"
+    srcOutput = "../../../TextFiles/output/untagged2001438.txt"
     db = createDataOfLocs(srcOutput)
     print(db.getDBCopy())
     def test_handleXml(self):
         db = copy.deepcopy(self.db)
-        handleXml("../../../laws/main.xml", db)
+        handleXml("../../../laws/2001438.xml", db)
 
     
 
