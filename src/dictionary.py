@@ -1,6 +1,6 @@
 import codecs
-
-FilePath = "../../../TextFiles/dict.txt"
+from env import envPath
+FilePath = envPath + "TextFiles/dict.txt"
 
 class Dictionary:
     def __init__(self):

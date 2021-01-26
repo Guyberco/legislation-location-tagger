@@ -2,6 +2,7 @@ import xml.etree.ElementTree as ET
 import re
 import src.stringHelper as stringHelper
 # from lawHandler import dataBase
+from env import envPath
 from src.DataBase import updateWord, isLocationOcc, DataBase
 import codecs
 
@@ -51,13 +52,16 @@ def handleXml(path, pathToSave, xmlFileName, db):
     mapKeys = db.getKeys()
     for key in mapKeys:
         traverseTree(fileRoot, db.getValueByKey(key), key)
-    createXmlFileFromTree(pathToSave, xmlFileName, fileTree)
+    newFileName = createXmlFileFromTree(pathToSave, xmlFileName, fileTree)
+    parseEscapeCharsInXML(f"{pathToSave}/{newFileName}")
+
 
 
 def createXmlFileFromTree(path, xmlFileName, tree):
     # openedFile = open(f"{path}/{xmlFileName}", 'w')
-    tree.write(f"{path}/locationTagged_{xmlFileName}", encoding='UTF-8')
-
+    newFileName = f"locationTagged_{xmlFileName}"
+    tree.write(f"{path}/{newFileName}", encoding='UTF-8')
+    return newFileName
 
 def traverseTree(node, locationObj, locationKey):
     if node.text is not None:
@@ -67,20 +71,28 @@ def traverseTree(node, locationObj, locationKey):
     if(node.tail is not None):
         node.tail = tagDesignatedLocations(node.tail, locationObj, locationKey)
 
+def parseEscapeCharsInXML(filePath):
+    """
+    :param filePath: path to xml file
+    :return: xml file with fixed parenthesis
+    """
+    file = open(filePath, mode='r', encoding='UTF-8')
+    text = re.sub('&lt;', "<", file.read())
+    text = re.sub('&gt;', ">", text)
+    file.close()
 
-# parseEscapeCharsInXML("../laws/newtemp.xml")
-
-# handleXml("../laws/main.xml")
-
-# dataBase = DataBase()
-# dataBase.put({'מזל': {'counter': 1, 'instancesToTag': [0]}})
-# dataBase.clearAllCounters()
-# tagDesignatedLocations(node.text, locationObj, locationToTag)
-
-# createXmlFileFromTree("../laws/newtemp",fileTree)
+    with open(filePath, "w+", encoding='UTF-8') as f:
+        f.write(text)
+        f.close()
 
 
 def extractTextFromXml(path, pathToSave, fileName):
+    """
+    Given xml file - create a text file without the tags
+    :param path: import path - where the original xml
+    :param pathToSave: path to the dir where we save the new xml
+    :param fileName: original xml file name
+    """
     file = open(f"{path}/{fileName}.xml", mode='r', encoding='UTF-8')
     text = re.sub('<[^<]+>', "", file.read())
     file.close()
@@ -88,17 +100,4 @@ def extractTextFromXml(path, pathToSave, fileName):
     with open(f"{pathToSave}/untagged_{fileName}.txt", "w+", encoding='UTF-8') as f:
         f.write(text)
         f.close()
-
-# extractTextFromXml("../laws/", "main")
-
-
-
-# def traverseTree(node):
-#     innerText = node.text 
-#     if innerText is not None:
-#          print(innerText)
-#     for child in node:
-#         traverseTree(child)
-#     if(node.tail is not None):
-#         print(node.tail)
 
