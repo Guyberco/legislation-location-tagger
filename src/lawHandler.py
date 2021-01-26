@@ -24,7 +24,7 @@ def checkForLocKey(db, lines, indx):
     :param db:  database of words that are locations
     :param lines: all the lines of the file (file here is the output of the tagger)
     :param indx: index of line we check
-    :return: indx of the next word to check in lines
+    :return: index of the next word to check in lines
     """
     increase_counter_flag = False
     line = lines[indx]

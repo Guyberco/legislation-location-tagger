@@ -57,6 +57,8 @@ def createXmlFileFromTree(filePath, tree):
     openedFile = open(filePath + ".xml", 'w')
     tree.write(filePath + ".xml", encoding='UTF-8')
 
+def parseEscapeCharsInXML(filepath):
+    pass
 
 def traverseTree(node, locationObj, locationToTag):
     if node.text is not None:

@@ -10,7 +10,7 @@ class TesTCreateLocationOpenTag(unittest.TestCase):
     print(db.getDBCopy())
     def test_handleXml(self):
         db = copy.deepcopy(self.db)
-        handleXml("../../../laws/main.xml", db)
+        handleXml("../../../laws/2001438.xml", db)
 
     
 
