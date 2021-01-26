@@ -52,11 +52,17 @@ def apppendLocationOcc(word, counter):
 def updateWord(word, columns):
     counter = word["counter"]
     word["counter"] = counter + 1
-    if(isLocationOcc(columns)):
+    if(CheckLocationOcc(columns)):
         apppendLocationOcc(word, counter)
 
+def checkTagInColumns(columns, findWord):
+    for word in columns:
+        if findWord == word:
+            return True
+    return False
 
-def isLocationOcc(columns):
+
+def CheckLocationOcc(list, indx):
     """
     check if the given list of strings (represents an entry in the NRE output) is a location
     returns true the 4th element is "properName", the word(first element) is contained in the loc dictionary
@@ -64,12 +70,25 @@ def isLocationOcc(columns):
     :param columns: list of strings
     :return: BOOLEAN
     """
-    if len(columns) >= 4 and columns[4] == "properName":
-        if loc_dictionray.checkValue(columns[1]):
-            for word in columns[3:]:
-                if word == "I_LOC":
-                    return True
-    return False
+    aggregatedWord = ''
+    aggregatedWordToTag = ''
+    i = indx
+    while i < len(list):
+        columns = list[i].split()
+        i += 1
+        if checkTagInColumns(columns, "I_LOC"):
+            if i-1 == indx or columns[3] == '-' or aggregatedWord[-1] == '-':
+                aggregatedWord += columns[3]
+                aggregatedWordToTag += columns[1]
+            else:
+                aggregatedWord += (" " + columns[3])
+                aggregatedWordToTag += (" " + columns[1])
+        else:
+            break
+    if not loc_dictionray.checkValue(aggregatedWordToTag):
+        aggregatedWord = ''
+        aggregatedWordToTag = ''
+    return (i, aggregatedWord, aggregatedWordToTag)
 
 
 
