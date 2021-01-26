@@ -40,7 +40,7 @@ def shouldWrapCurrentInstance(counter: int, currentInstance: int) -> bool:
 
 def createLocationOpenTag(location):
     if location != '':
-        return f"<location refersTo=\"{location}\" href=\"{location}\">"
+        return f"<location refersTo=\"{location}\" href=\"https://dbpedia.org/page/{location}\">"
     else:
         return "<location>"
 
