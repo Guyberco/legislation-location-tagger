@@ -13,13 +13,23 @@ st = StanfordNERTagger("C:/Users/zemse/Desktop/school/digital sc/final project/l
                        path_to_jar="C:/Users/zemse/Desktop/school/digital sc/final project/legislation-location-tagger/src/stanford-ner-4.2.0/stanford-ner-2020-11-17/stanford-ner.jar")
 
 
+def tranlsateText(text):
+    """
+    :param text:
+    :return: translated text
+    """
+    return translator.translate(text).text
+
+def tagEnglishText(text):
+     return st.tag(word_tokenize(text))
+
 def checkIsLocationInTranslate(text):
     """
     :param text: string of text that represent a word or an sentence
     :return: true if the translated tagged text contains a LOCATION TAG
     """
-    englishTranslate = translator.translate(text)  #translate to english
-    classified_text = st.tag(word_tokenize(englishTranslate.text))  # tag the words of the text
+    englishTranslatedText = tranlsateText(text)
+    classified_text = tagEnglishText(text)  # tag the words of the text
     return checkLocInList(classified_text)
 
 def checkLocInList(tagged_text):

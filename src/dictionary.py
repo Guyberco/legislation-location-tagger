@@ -7,10 +7,8 @@ class Dictionary:
         self.db = {}
         file = codecs.open(FilePath, 'r', 'utf8')  ########### note: ארץ was removed..... maybe remove א"י
         for line in file:
-            splitedLine = line.split()
-            if len(splitedLine) == 2:
-                self.db.update({splitedLine[1] : True})
-
+            splitedLine = " ".join(line[4:].split())
+            self.db.update({splitedLine : True})
     def checkValue(self, location):
         """
         :param location:
