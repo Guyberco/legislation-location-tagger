@@ -1,5 +1,5 @@
 import codecs
-from src.DataBase import updateWord, CheckLocationOcc, DataBase, apppendLocationOcc
+from src.DataBase import updateWord, buildWordThatHasLocTags, DataBase, apppendLocationOcc
 
 #TODO
 # things that dont work ארץ-ישראל, באר-שבע
@@ -17,10 +17,12 @@ def initializeDataBase(file, dataBase):
     indx = 0
     while indx < len(lines):
         columns = lines[indx].split()
-        (newIndex, aggregatedWord, aggregatedWordToTag) = CheckLocationOcc(lines, indx)
-        if not aggregatedWord == '':
+        (newIndex, aggregatedWord, aggregatedWordToTag) = buildWordThatHasLocTags(lines, indx)
+        if not aggregatedWord == '' and loc_dictionray.checkValue(aggregatedWordToTag):
             dataBase.createNewLocationEntry(aggregatedWordToTag, aggregatedWord)
-        indx = newIndex
+            indx = newIndex
+        else:
+            indx += 1
 
 
 
@@ -76,34 +78,47 @@ def initializeDataBase(file, dataBase):
 #     while indx < len(lines):
 #         indx = checkForLocKey(dataBase, lines, indx)
 
+def getNextNonEmptyLine(lines, indx):
+    while indx < len(lines):
+        if not len(lines[indx].split()) < 3:
+            return indx
+        else:
+            indx += 1
+    return -1
+
+
+def seekLastWordDup(lines, indx):
+    indx = getNextNonEmptyLine(lines, indx)
+    if indx == -1:
+        return -1
+    columns = lines[indx].split()
+    lineNum = columns[0]
+    while indx + 1 < len(lines):
+        nextLinecolumns = lines[indx + 1].split()
+        if len(nextLinecolumns) < 3 or not nextLinecolumns[0] == lineNum:
+            return indx
+        indx += 1
+    return indx
+
+
+
 def updateOccurances(file, db):
     lines = file.readlines()
     indx = 0
-    increase_counter_flag = False
+
     while indx < len(lines):
-        line = lines[indx]
-        columns = line.split()
-        if indx >= 1:
-            prev_column = lines[indx-1].split()
-            increase_counter_flag = len(prev_column) > 3 and len(columns) > 3 and (not columns[0] == prev_column[0]) \
-                                and loc_dictionray.checkValue(prev_column[3])
-            if increase_counter_flag:
-                increased_word = prev_column[3]
-        (newIndex, aggregatedWord, aggregatedWordToTag) = CheckLocationOcc(lines, indx)
-        if newIndex == indx+1:
-            if not aggregatedWord == '':
-                location = db.getValueByKey(aggregatedWord)
-                apppendLocationOcc(location, db.getCounterByKey(aggregatedWord))
-            indx = newIndex
-        elif aggregatedWord == '':
-            indx += 1
-        else:
-            indx = newIndex
-            location = db.getValueByKey(aggregatedWord)
-            apppendLocationOcc(location, db.getCounterByKey(aggregatedWord))
+        indx = seekLastWordDup(lines, indx)
+        if indx == -1:
+            break;
+        (newIndex, aggregatedWord, aggregatedWordToTag) = buildWordThatHasLocTags(lines, indx)
+        if db.isKey(aggregatedWord):
+            if loc_dictionray.checkValue(aggregatedWordToTag): # if aggratedWord is location
+                db.updateAsLocationOcc(aggregatedWord)
+                indx = newIndex
             db.increaseCounter(aggregatedWord)
-        if increase_counter_flag:
-           db.increaseCounter(increased_word)
+        else:
+            indx += 1
+
 
 def createDataOfLocs(filePath):
     dataBase = DataBase()

@@ -3,7 +3,7 @@ import re
 import src.stringHelper as stringHelper
 # from lawHandler import dataBase
 from env import envPath
-from src.DataBase import updateWord, CheckLocationOcc, DataBase
+from src.DataBase import updateWord, buildWordThatHasLocTags, DataBase
 import codecs
 
 def tagDesignatedLocations(string, locationObj, LocationKey):
