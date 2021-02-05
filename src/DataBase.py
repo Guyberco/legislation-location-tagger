@@ -1,5 +1,6 @@
 import copy
-from src.dictionary import loc_dictionray
+from src.dictionary import getLocationToTagByAcronym
+from src.googleTrans import tranlsateText
 
 
 class DataBase:
@@ -29,10 +30,12 @@ class DataBase:
         apppendLocationOcc(location, self.getCounterByKey(wordInText))
 
     def createNewLocationEntry(self, location, wordInText):
-        if location == "א\"י":
-            self.db.update({wordInText: {"counter": 0, "instancesToTag": [], "tagToAdd": "ישראל"}})
-        else:
+        locationToTagAcronym = getLocationToTagByAcronym(location)
+        if locationToTagAcronym is None:
+            translateLoctionToTag(location)
             self.db.update({wordInText: {"counter": 0, "instancesToTag": [], "tagToAdd": location}})
+        else:
+            self.db.update({wordInText: {"counter": 0, "instancesToTag": [], "tagToAdd": locationToTagAcronym}})
 
     def put(self, entry):
         self.db.update(entry)
@@ -55,7 +58,8 @@ def apppendLocationOcc(word, counter):
     word["instancesToTag"].append(counter)
 
 
-
+def translateLoctionToTag(location):
+    return tranlsateText("אני גר" + location)
 
 def updateWord(word, columns):
     counter = word["counter"]
@@ -99,5 +103,4 @@ def buildWordThatHasLocTags(list, indx):
             break
     return (i, aggregatedWord, aggregatedWordToTag)
 
-
-
+print(translateLoctionToTag("באר שבע"))

@@ -40,6 +40,36 @@ class TestAddToString(unittest.TestCase):
         str = 'Oh god'
         self.assertNotEqual('Oh my god', stringHelper.addToString(str, 'my', 3))
 
+    def test_isAcronym(self):
+        str = 'sd"sd'
+        self.assertTrue(stringHelper.isAcronym(str))
+
+    def test_isAcronym2(self):
+        str = 'sd.sd'
+        self.assertTrue(stringHelper.isAcronym(str))
+
+    def test_isAcronym3(self):
+        str = 'sdsd'
+        self.assertFalse(stringHelper.isAcronym(str))
+
+    def test_isMoreThanOneWord(self):
+        str = 'sd sd'
+        self.assertTrue(stringHelper.isMoreThanOneWord(str))
+
+    def test_isMoreThanOneWord2(self):
+        str = 'sds-d'
+        self.assertTrue(stringHelper.isMoreThanOneWord(str))
+
+    def test_isMoreThanOneWord3(self):
+        str = 's_dsd'
+        self.assertTrue(stringHelper.isMoreThanOneWord(str))
+
+    def test_isMoreThanOneWord4(self):
+        str = 'sdsd'
+        self.assertFalse(stringHelper.isMoreThanOneWord(str))
+
+# def isMoreThanOneWord(word):
+#     return ' ' in word or '-' in word or '_' in word
 
 if __name__ == '__main__':
     unittest.main()

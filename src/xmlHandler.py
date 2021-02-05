@@ -6,6 +6,9 @@ from env import envPath
 from src.DataBase import updateWord, buildWordThatHasLocTags, DataBase
 import codecs
 
+from src.googleTrans import checkIsLocationInTranslate
+
+
 def tagDesignatedLocations(string, locationObj, LocationKey):
     index = 0
     instancesToTag = locationObj["instancesToTag"]
@@ -19,18 +22,20 @@ def tagDesignatedLocations(string, locationObj, LocationKey):
         else:
             if shouldWrapCurrentInstance(locationObj["counter"], instancesToTag[0]):  # validate that the list locationObj["instancesToTag"] isnt empty
                 instancesToTag.pop(0)
-                openingTag = createLocationOpenTag(locationToTag)  # add here attribute data
-                closingTag = "</location>"
-                wrappedTargetWord = stringHelper.wrapString(LocationKey, openingTag, closingTag)
-                string = stringHelper.replaceWordAtIndex(string, wrappedTargetWord, foundIndex, locationToTagLen)
-                index = foundIndex + len(wrappedTargetWord)
+                if verifyInGoogleContext(string, LocationKey):
+                    openingTag = createLocationOpenTag(locationToTag)  # add here attribute data
+                    closingTag = "</location>"
+                    wrappedTargetWord = stringHelper.wrapString(LocationKey, openingTag, closingTag)
+                    string = stringHelper.replaceWordAtIndex(string, wrappedTargetWord, foundIndex, locationToTagLen)
+                    index = foundIndex + len(wrappedTargetWord)
             else:
                 index = foundIndex + locationToTagLen
             incrementLocationCounter(locationObj)
     return string
 
-def createLocationTag(location):
-    pass
+def verifyInGoogleContext(string, LocationKey):
+    return stringHelper.isAcronym(LocationKey) or stringHelper.isMoreThanOneWord(LocationKey) or checkIsLocationInTranslate(string)
+
 
 def incrementLocationCounter(locationObj, incrementBy: int = 1):
     locationObj["counter"] += incrementBy
