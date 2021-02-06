@@ -1,6 +1,7 @@
 import copy
 from src.dictionary import getLocationToTagByAcronym
 from src.googleTrans import tranlsateText
+from deep_translator import GoogleTranslator
 
 
 class DataBase:
@@ -32,10 +33,9 @@ class DataBase:
     def createNewLocationEntry(self, location, wordInText):
         locationToTagAcronym = getLocationToTagByAcronym(location)
         if locationToTagAcronym is None:
-            translateLoctionToTag(location)
-            self.db.update({wordInText: {"counter": 0, "instancesToTag": [], "tagToAdd": location}})
+            self.db.update({wordInText: {"counter": 0, "instancesToTag": [], "tagToAddHebrew": location, "tagToAddEnglish": translateLoctionToTag(location)}})
         else:
-            self.db.update({wordInText: {"counter": 0, "instancesToTag": [], "tagToAdd": locationToTagAcronym}})
+            self.db.update({wordInText: {"counter": 0, "instancesToTag": [], "tagToAddHebrew": location, "tagToAddEnglish": locationToTagAcronym}})
 
     def put(self, entry):
         self.db.update(entry)
@@ -59,7 +59,12 @@ def apppendLocationOcc(word, counter):
 
 
 def translateLoctionToTag(location):
-    return tranlsateText("אני גר" + location)
+    translatedText = tranlsateText("אני גר " + location)
+    translate = tranlsateText(location)
+    print(translate)
+    return "_".join(translatedText.split()[3:])
+
+
 
 def updateWord(word, columns):
     counter = word["counter"]
@@ -103,4 +108,5 @@ def buildWordThatHasLocTags(list, indx):
             break
     return (i, aggregatedWord, aggregatedWordToTag)
 
-print(translateLoctionToTag("באר שבע"))
+# ret = translateLoctionToTag("באר שבע")
+# print(ret)

@@ -1,13 +1,15 @@
 import os
 from googletrans import Translator
-from textblob import TextBlob
-import nltk
+from deep_translator import GoogleTranslator
+
+# from textblob import TextBlob
+# import nltk
 from nltk.tag import StanfordNERTagger
 from nltk.tokenize import word_tokenize
 
 from env import envPath
 
-translator = Translator()
+translator = GoogleTranslator()
 java_path = "C:/Program Files/Java/jdk-15.0.1/bin/java.exe"  #env var
 os.environ["JAVAHOME"] = java_path
 st = StanfordNERTagger(f"{envPath}/src/stanford-ner-4.2.0/stanford-ner-2020-11-17/classifiers/english.all.3class.distsim.crf.ser.gz",
@@ -19,7 +21,7 @@ def tranlsateText(text):
     :param text:
     :return: translated text
     """
-    return translator.translate(text).text
+    return translator.translate(text)
 
 def tagEnglishText(text):
      return st.tag(word_tokenize(text))
@@ -30,7 +32,7 @@ def checkIsLocationInTranslate(text):
     :return: true if the translated tagged text contains a LOCATION TAG
     """
     englishTranslatedText = tranlsateText(text)
-    classified_text = tagEnglishText(text)  # tag the words of the text
+    classified_text = tagEnglishText(englishTranslatedText)  # tag the words of the text
     return checkLocInList(classified_text)
 
 def checkLocInList(tagged_text):

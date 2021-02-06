@@ -12,7 +12,8 @@ from src.googleTrans import checkIsLocationInTranslate
 def tagDesignatedLocations(string, locationObj, LocationKey):
     index = 0
     instancesToTag = locationObj["instancesToTag"]
-    locationToTag = locationObj["tagToAdd"]
+    locationToTagEnglish = locationObj["tagToAddEnglish"]
+    locationToTagHebrew = locationObj["tagToAddHebrew"]
     locationToTagLen = len(LocationKey)
 
     while index < len(string) and len(instancesToTag) > 0:  # keep len calculation inside thw while
@@ -23,11 +24,13 @@ def tagDesignatedLocations(string, locationObj, LocationKey):
             if shouldWrapCurrentInstance(locationObj["counter"], instancesToTag[0]):  # validate that the list locationObj["instancesToTag"] isnt empty
                 instancesToTag.pop(0)
                 if verifyInGoogleContext(string, LocationKey):
-                    openingTag = createLocationOpenTag(locationToTag)  # add here attribute data
+                    openingTag = createLocationOpenTag(locationToTagEnglish, locationToTagHebrew)  # add here attribute data
                     closingTag = "</location>"
                     wrappedTargetWord = stringHelper.wrapString(LocationKey, openingTag, closingTag)
                     string = stringHelper.replaceWordAtIndex(string, wrappedTargetWord, foundIndex, locationToTagLen)
                     index = foundIndex + len(wrappedTargetWord)
+                else:
+                    index = foundIndex + locationToTagLen
             else:
                 index = foundIndex + locationToTagLen
             incrementLocationCounter(locationObj)
@@ -43,9 +46,9 @@ def incrementLocationCounter(locationObj, incrementBy: int = 1):
 def shouldWrapCurrentInstance(counter: int, currentInstance: int) -> bool:
     return counter == currentInstance
 
-def createLocationOpenTag(location):
-    if location != '':
-        return f"<location refersTo=\"{location}\" href=\"https://dbpedia.org/page/{location}\">"
+def createLocationOpenTag(locationToTagEnglish, locationToTagHebrew):
+    if locationToTagHebrew != '':
+        return f"<location refersTo=\"{locationToTagHebrew}\" href=\"https://dbpedia.org/page/{locationToTagEnglish}\">"
     else:
         return "<location>"
 
