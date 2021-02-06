@@ -36,7 +36,25 @@ acronymToLocationTag = {
     "ת\"א": "Tel_Aviv"
 }
 
+acronymToLocationTagToHebrew = {
+    "א\"י": "ישראל",
+    "ארה\"ב": "ארצות הברית",
+    "דרא\"פ": "דרום אפריקה",
+    "ב\"ש": "באר שבע",
+    "בני עי\"ש": "בני עיש",
+    "בסמ\"ה": "באסמה",
+    "כפ\"ס": "כפר סבא",
+    "פ\"ת": "פתח תקווה",
+    "רשל\"צ": "ראשון לציון",
+    "ר\"ג": "רמת גן",
+    "רמה\"ש": "רמת השרון",
+    "ת\"א": "תל אביב"
+}
+
 def getLocationToTagByAcronym(acronym):
     return acronymToLocationTag.get(acronym)
+
+def getLocationToTagByAcronymHEBREW(acronym):
+    return acronymToLocationTagToHebrew.get(acronym)
 
 loc_dictionray =  Dictionary()

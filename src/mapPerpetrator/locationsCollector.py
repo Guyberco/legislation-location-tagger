@@ -7,12 +7,12 @@ locationsMap = {}
 
 def extractDataFromAllLaws():
     dir = f"{envPath}/final_outputs"
-    print(dir)
     for filename in os.listdir(dir):
         extractDataFromLaw(f"{dir}/{filename}")
 
 def extractDataFromLaw(xmlFilePath):
     ET.register_namespace('', "http://docs.oasis-open.org/legaldocml/ns/akn/3.0")  # ENV VARIABLE
+    print(xmlFilePath)
     fileTree = ET.parse(xmlFilePath)
     fileRoot = fileTree.getroot()
     locations = getLocations(fileRoot)

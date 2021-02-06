@@ -1,5 +1,5 @@
 import copy
-from src.dictionary import getLocationToTagByAcronym
+from src.dictionary import getLocationToTagByAcronym, getLocationToTagByAcronymHEBREW
 from src.googleTrans import tranlsateText
 from deep_translator import GoogleTranslator
 
@@ -35,7 +35,7 @@ class DataBase:
         if locationToTagAcronym is None:
             self.db.update({wordInText: {"counter": 0, "instancesToTag": [], "tagToAddHebrew": location, "tagToAddEnglish": translateLoctionToTag(location)}})
         else:
-            self.db.update({wordInText: {"counter": 0, "instancesToTag": [], "tagToAddHebrew": location, "tagToAddEnglish": locationToTagAcronym}})
+            self.db.update({wordInText: {"counter": 0, "instancesToTag": [], "tagToAddHebrew": getLocationToTagByAcronymHEBREW(location), "tagToAddEnglish": locationToTagAcronym}})
 
     def put(self, entry):
         self.db.update(entry)
@@ -60,8 +60,6 @@ def apppendLocationOcc(word, counter):
 
 def translateLoctionToTag(location):
     translatedText = tranlsateText("אני גר " + location)
-    translate = tranlsateText(location)
-    print(translate)
     return "_".join(translatedText.split()[3:])
 
 
@@ -99,7 +97,7 @@ def buildWordThatHasLocTags(list, indx):
         wordAsInText = columns[3]
         wordToTag = columns[1]
         if checkTagInColumns(columns, "I_LOC") and checkTagInColumns(columns, "properName"):
-            if not (i-1 == indx or wordAsInText == '-' or aggregatedWord[-1] == '-'):
+            if not (i-1 == indx or wordAsInText == '-' or (len(aggregatedWord)>1 and aggregatedWord[-1] == '-')):
                 aggregatedWord += " "
                 aggregatedWordToTag += " "
             aggregatedWord += wordAsInText

@@ -94,6 +94,26 @@ def parseEscapeCharsInXML(filePath):
         f.close()
 
 
+def strip_empty_lines(s):
+    indx = 0;
+    for c in s:
+        if indx == 0:
+            indx = 1
+            continue
+        if c == '' or c == '\n' or c == ' ' or c == '\"' or c == '\'':
+            indx += 1
+        else:
+            break
+    return s[indx:]
+
+    # lines = s.splitlines("\n")
+    # for line in lines:
+    #     if line == ' ' or line == "\n":
+    #         lines.pop(0)
+    # while lines and not lines[0].strip():
+    #     lines.pop(0)
+    # return '\n'.join(lines)
+
 def extractTextFromXml(path, pathToSave, fileName):
     """
     Given xml file - create a text file without the tags
@@ -106,6 +126,8 @@ def extractTextFromXml(path, pathToSave, fileName):
     file.close()
 
     with open(f"{pathToSave}/untagged_{fileName}.txt", "w+", encoding='UTF-8') as f:
-        f.write(text)
+        f.write(strip_empty_lines(text))
         f.close()
+
+
 
