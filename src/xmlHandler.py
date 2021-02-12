@@ -17,7 +17,7 @@ def tagDesignatedLocations(string, locationObj, LocationKey):
     locationToTagLen = len(LocationKey)
 
     while index < len(string) and len(instancesToTag) > 0:  # keep len calculation inside thw while
-        foundIndex = string.find(LocationKey, index)
+        foundIndex = string.find(f" {LocationKey}", index)
         if foundIndex == -1:
             break
         else:

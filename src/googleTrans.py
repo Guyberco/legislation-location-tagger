@@ -10,6 +10,7 @@ from nltk.tokenize import word_tokenize
 from env import envPath
 
 translator = GoogleTranslator()
+
 java_path = "C:/Program Files/Java/jdk-15.0.1/bin/java.exe"  #env var
 os.environ["JAVAHOME"] = java_path
 st = StanfordNERTagger(f"{envPath}/src/stanford-ner-4.2.0/stanford-ner-2020-11-17/classifiers/english.all.3class.distsim.crf.ser.gz",
