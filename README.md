@@ -25,7 +25,11 @@ For a location $MY_LOCATION that found in your xml file, the following will repl
   <location refersTo="$MY_LOCATION" href="https://dbpedia.org/page/$MY_LOCATION">$MY_LOCATION </location>
 
 
-To run the tool, you should first have LDA tagger of BGU university installed in src/tagger.
+To run the tool, you should:
+* first have LDA tagger of BGU university installed in src/tagger.
+* change StanfordNERTagger variable to your JAVA path.
+* Run main() function.
+
 
 You can dowload from here https://www.cs.bgu.ac.il/~elhadad/nlpproj/LDAforHebrew.html.
 

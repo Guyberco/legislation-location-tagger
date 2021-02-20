@@ -16,3 +16,9 @@ def replaceWordAtIndex(str, strToReplaceWith, index, prevWordSize):
         return str[ : index] + strToReplaceWith + str[index + prevWordSize:]
     else:
         return str
+
+def isAcronym(word):
+    return '\"' in word or '.' in word
+
+def isMoreThanOneWord(word):
+    return ' ' in word or '-' in word or '_' in word
