@@ -1,7 +1,7 @@
 import json
 
-from src.analitics.coordinateGetter import getCoordinates, locactionToCordinated
-from src.analitics.locationsCollector import locationsMap
+from src.analytics.coordinateGetter import getCoordinates, locactionToCordinated
+from src.analytics.locationsCollector import locationsMap
 
 geoJSON = {
     "type": "FeatureCollection",
