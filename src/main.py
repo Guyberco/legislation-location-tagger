@@ -1,9 +1,5 @@
-import codecs
-import glob
 import os
-import shutil
 import xml.etree.ElementTree as ET
-from env import envPath
 from src.lawHandler import createDataOfLocs
 from src.taggerRunner import runTagger
 from src.xmlHandler import extractTextFromXml, handleXml, parseEscapeCharsInXML
@@ -32,48 +28,28 @@ def getListOfFiles(dirName):
     return allFiles
 
 
-def moveLawsToOneFolder():
-    dst = "C:/Users/zemse/Downloads/LawRepoWiki/putlaws"
-    listOfAllFiles = getListOfFiles("C:/Users/zemse/Downloads/LawRepoWiki/akn/il/act")
-    # listOfFiles = glob.glob("C:/Users/zemse/Downloads/LawRepoWiki/akn/il/act" + '/**/*/.xml', recursive=True)
-    # print(listOfFiles)
-    for nameFile in listOfAllFiles:
-        if nameFile[-3:] == "xml":
-            shutil.copy(nameFile, dst)
-            Prefixname = nameFile.split("\\")[3]
-            os.rename('C:/Users/zemse/Downloads/LawRepoWiki/putlaws/main.xml', f"C:/Users/zemse/Downloads/LawRepoWiki/putlaws/{Prefixname}Law.xml")
-
-
 def verifyXML(filePath):
     fileTree = ET.parse(filePath)
 
-def remove():
-    input = os.listdir("../TextFiles/tagger_output")
-    output = os.listdir("../final_outputs")
-    inputSize = len(input)
-    outputSize = len(output)
+def check_files():
+    list_of_erros = []
+    for filename in os.listdir("../final_outputs"):
+        try:
+            verifyXML(f"../final_outputs/{filename}")
+        except ET.ParseError:
+            list_of_erros.append(f"{filename}.xml")
+            print(f"Not valid output {filename}.xml")
+    print(list_of_erros)
 
-    deletedFilesNumber = 0
-    for fileName in input:
-        # afteruntagged_3Law
-        changeFileName = 'locationTagged_' + fileName[14:-4] + '.xml'
-        # print(f"before- {fileName}  after-{changeFileName}")
-        if changeFileName in output:
-            os.remove(f"../TextFiles/tagger_output/{fileName}")
-            deletedFilesNumber += 1
-    newInputNum = len(os.listdir("../TextFiles/tagger_output"))
-    newOutputNum = len(os.listdir("../final_outputs"))
 
-    # print(f"{deletedFilesNumber} files have been deleted.")
-    print(f"Num of deleted files {deletedFilesNumber}")
 
 def main():
     originalXmlPath = "../originalLaws"
     list_of_erros = []
-    # for filename in os.listdir("../originalLaws"):
-    #     filename = filename[:-4]    # remove .xml ending
-    #     extractTextFromXml(originalXmlPath, "../TextFiles/tagger_input", filename)
-    # runTagger()
+    for filename in os.listdir("../originalLaws"):
+        filename = filename[:-4]    # remove .xml ending
+        extractTextFromXml(originalXmlPath, "../TextFiles/tagger_input", filename)
+    runTagger()
     for filename in os.listdir("../TextFiles/tagger_output"):
         filename = filename[14:-4]    # remove .txt ending and untagged_ prefix
         print(f"****Starting: {filename}.xml")
@@ -89,24 +65,7 @@ def main():
 
 
 
-def check_files():
-    list_of_erros = []
-    for filename in os.listdir("../final_outputs"):
-        try:
-            verifyXML(f"../final_outputs/{filename}")
-        except ET.ParseError:
-            list_of_erros.append(f"{filename}.xml")
-            print(f"Not valid output {filename}.xml")
-    print(list_of_erros)
 
 
 
-
-
-
-
-# main()
-
-
-
-# remove()
+main()
