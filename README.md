@@ -27,11 +27,12 @@ For a location $MY_LOCATION that found in your xml file, the following will repl
 
 To run the tool, you should:
 * first have LDA tagger of BGU university installed in src/tagger.
-* change StanfordNERTagger variable to your JAVA path.
+* change StanfordNERTagger variable to your JAVA path (java_path in env.py).
+* For running in windows, set windows=True in env.py, for running in Mac, set windows=False 
 * Run main() function.
 
 
-You can dowload from here https://www.cs.bgu.ac.il/~elhadad/nlpproj/LDAforHebrew.html.
+You can dowload LDA tagger of BGU university from here https://www.cs.bgu.ac.il/~elhadad/nlpproj/LDAforHebrew.html.
 
 Second, run the main() function which is in src/main.py, and you are ready to go!
 
@@ -42,6 +43,8 @@ You can find the new xml files in final_output directory.
 The following tools are being used:
 
   LDA for Hebrew - Dr. Adler BGU, Prophesor elhadad BGU
+  
+  Tokenizer by Yoav Goldber
 
   Google Translate
 
@@ -49,8 +52,11 @@ The following tools are being used:
 
   DBpedia
 
-  GeoJson
+  MapBox
+  
+  GoogleCharts
 
+  Geopy
 
 
 Tool written by Israel Zemser and Guy Bercovich
