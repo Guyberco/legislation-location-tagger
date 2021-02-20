@@ -1,14 +1,25 @@
 import xml.etree.ElementTree as ET
 import os
-
+import json
 from env import envPath
 
 locationsMap = {}
+locationToHref = {}
+
 
 def extractDataFromAllLaws():
     dir = f"{envPath}/final_outputs"
     for filename in os.listdir(dir):
-        extractDataFromLaw(f"{dir}/{filename}")
+        try:
+            if isXmlFile(filename):
+                extractDataFromLaw(f"{dir}/{filename}")
+        except ET.ParseError:
+            print (filename)
+    with open('locationsMap.json', 'w', encoding='UTF-8') as file:
+        json.dump(locationsMap, file)
+    with open('locationToHref.json', 'w', encoding='UTF-8') as file:
+        json.dump(locationToHref, file)
+
 
 def extractDataFromLaw(xmlFilePath):
     ET.register_namespace('', "http://docs.oasis-open.org/legaldocml/ns/akn/3.0")  # ENV VARIABLE
@@ -24,7 +35,12 @@ def extractDataFromLaw(xmlFilePath):
 
 def getLocations(root):
     locationsTag = list(root.iter("{http://docs.oasis-open.org/legaldocml/ns/akn/3.0}location"))
+    for location in locationsTag:
+        if location not in locationToHref.keys():
+            locationToHref.update({location.attrib["refersTo"]: location.attrib["href"]})
+
     return set(map(lambda location: location.attrib["refersTo"], locationsTag))
+
 
 def getLawDate(root):
     FRBRdateList = list(root.iter("{http://docs.oasis-open.org/legaldocml/ns/akn/3.0}FRBRdate"))
@@ -33,6 +49,7 @@ def getLawDate(root):
         date = FRBRdateList[0].attrib["date"]
     return date
 
+
 def getLawName(root):
     p = getLawFirstP(root)
     if not p == None:
@@ -40,14 +57,14 @@ def getLawName(root):
         return " ".join(pContext.split())
 
 
-
 def addLawToLoactionMap(law, locations):
     for location in locations:
         locationInMap = locationsMap.get(location)
-        if not locationInMap ==  None:
+        if not locationInMap == None:
             locationInMap.append(law)
         else:
             locationsMap.update({location: [law]})
+
 
 def getLawFirstP(root):
     body = list(root.iter("{http://docs.oasis-open.org/legaldocml/ns/akn/3.0}body"))
@@ -57,12 +74,18 @@ def getLawFirstP(root):
             return pList[0]
     return None
 
+
 def traverseParagraph(node):
     text = ''
     if node.text is not None:
         text += node.text
     for child in node:
         text += traverseParagraph(child)
-    if(node.tail is not None):
+    if (node.tail is not None):
         text += node.tail
     return text
+
+def isXmlFile(filename):
+    return filename[-4:] == '.xml'
+
+extractDataFromAllLaws()
