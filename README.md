@@ -2,7 +2,7 @@
 
 This tool may help you to identify and tag locations in Israel legislation.
 
-This tool was made in a Digital Humanities for CS Students course ןמ Ben Gurion University of the Negev, taught by Yael Netzer.
+This tool was made in a Digital Humanities for CS Students course in Ben Gurion University of the Negev, taught by Yael Netzer.
 
 The program was writtten mainly in python and uses some other tools.
 
@@ -11,13 +11,13 @@ The program takes all law files in xml format, in originalLaws directory, and wr
 location, and with href, which contains an extrnal opened linked data link, which is currently DBpedia.
 
 
-This is a vary powerfull and usefull tool that may help you manupluating laws with respect to the locations that in them.
+This is a very powerfull and usefull tool that may help you manupluating laws with respect to the locations that in them.
 It may helps you to get a really informative data about location in the Israel legislation, which can be taken for differenet uses.
 
 
 In addition, we have attached an example of how to run over all <location>, extract them, and making with them
-a usefull structure - GeoJson format file, which displays all locations that have been found in Israel law in a map,
-with a list of laws.
+a usefull structures - GeoJson format file, which displays all locations that have been found in Israel law in a map,
+with a list of laws and various inforational graphs.
 
 
 For a location $MY_LOCATION that found in your xml file, the following will replace the $MY_LOCATION text:
