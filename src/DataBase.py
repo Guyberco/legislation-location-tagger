@@ -1,5 +1,7 @@
 import copy
-from src.dictionary import loc_dictionray
+from src.dictionary import getLocationToTagByAcronym, getLocationToTagByAcronymHEBREW
+from src.googleTrans import tranlsateText
+from deep_translator import GoogleTranslator
 
 
 class DataBase:
@@ -29,10 +31,11 @@ class DataBase:
         apppendLocationOcc(location, self.getCounterByKey(wordInText))
 
     def createNewLocationEntry(self, location, wordInText):
-        if location == "א\"י":
-            self.db.update({wordInText: {"counter": 0, "instancesToTag": [], "tagToAdd": "ישראל"}})
+        locationToTagAcronym = getLocationToTagByAcronym(location)
+        if locationToTagAcronym is None:
+            self.db.update({wordInText: {"counter": 0, "instancesToTag": [], "tagToAddHebrew": location, "tagToAddEnglish": translateLoctionToTag(location)}})
         else:
-            self.db.update({wordInText: {"counter": 0, "instancesToTag": [], "tagToAdd": location}})
+            self.db.update({wordInText: {"counter": 0, "instancesToTag": [], "tagToAddHebrew": getLocationToTagByAcronymHEBREW(location), "tagToAddEnglish": locationToTagAcronym}})
 
     def put(self, entry):
         self.db.update(entry)
@@ -54,6 +57,10 @@ class DataBase:
 def apppendLocationOcc(word, counter):
     word["instancesToTag"].append(counter)
 
+
+def translateLoctionToTag(location):
+    translatedText = tranlsateText("אני גר " + location)
+    return "_".join(translatedText.split()[3:])
 
 
 
@@ -90,7 +97,7 @@ def buildWordThatHasLocTags(list, indx):
         wordAsInText = columns[3]
         wordToTag = columns[1]
         if checkTagInColumns(columns, "I_LOC") and checkTagInColumns(columns, "properName"):
-            if not (i-1 == indx or wordAsInText == '-' or aggregatedWord[-1] == '-'):
+            if not (i-1 == indx or wordAsInText == '-' or (len(aggregatedWord)>1 and aggregatedWord[-1] == '-')):
                 aggregatedWord += " "
                 aggregatedWordToTag += " "
             aggregatedWord += wordAsInText
@@ -99,5 +106,5 @@ def buildWordThatHasLocTags(list, indx):
             break
     return (i, aggregatedWord, aggregatedWordToTag)
 
-
-
+# ret = translateLoctionToTag("באר שבע")
+# print(ret)
