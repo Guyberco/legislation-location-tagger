@@ -55,16 +55,14 @@ def buildLocationFeature(location):
 
 def getColorByNumer(number):
     if 0 < number <= 1:
-        return '#d1e5ef'
-    elif 1 < number <= 3:
         return '#607d8b'
-    elif 3 < number <= 6:
+    elif 1 < number <= 3:
         return '#ffe52e'
-    elif 6 < number <= 10:
+    elif 3 < number <= 6:
         return '#ffbe5d'
-    elif 10 < number <= 30:
+    elif 6 < number <= 10:
         return '#dc8300'
-    elif 30 < number <= 200:
+    elif 10 < number <= 30:
         return '#f38080'
     else:
         return '#b71c1c'

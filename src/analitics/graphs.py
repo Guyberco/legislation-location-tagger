@@ -1,12 +1,12 @@
 import json
 import functools
 
-def getLawsByDate(locationsMapJson, century=""):
+def getLawsByDate(locationsMapJson, decade=""):
     locations = []
     for location in locationsMapJson.keys():
         laws = locationsMapJson.get(location)
-        if not century == "":
-            laws = list(filter(isLawInCentury(century), laws))
+        if not decade == "":
+            laws = list(filter(isLawInDecade(decade), laws))
         locations.append([location, len(laws)])
     return locations
 
@@ -19,19 +19,19 @@ def getYearByDate(date):
         return None
 
 
-def isInCentury(century, date):
-    return century[:3] == date[:3]
+def isInDecade(decade, date):
+    return decade[:3] == date[:3]
 
 
-def isLawInCentury(century):
-    def isInC(law):
+def isLawInDecade(decade):
+    def isInD(law):
         date = law.get('date')
         year = getYearByDate(date)
         if year:
-            return isInCentury(century, year)
+            return isInDecade(decade, year)
         else:
             return False
-    return isInC
+    return isInD
 
 def getTopK(locations, k):
     locations.sort(key=(lambda location: location[1]), reverse=True)
@@ -41,24 +41,24 @@ def getLowK(locations, k):
     locations.sort(key=(lambda location: location[1]))
     return locations[:k]
 
-def makeIsraelStockChartByCenturies():
+def makeIsraelStockChartByDecades():
     with open('locationsMap.json', 'r', encoding='UTF-8') as json_file:
         locationsMapJson = json.load(json_file)
         locations = getLawsByDate(locationsMapJson)
         israelLaws = locationsMapJson.get("ישראל")
 
-        centuriesToLaws = {
+        decadesToLaws = {
             1000: 0,
         }
         for c in range(1900, 2030, 10):
-            centuriesToLaws.update({c: 0})
+            decadesToLaws.update({c: 0})
         for law in israelLaws:
             date = getYearByDate(law.get("date"))
-            dateCentury = date[:3] + "0"
-            centuriesToLaws[(int(dateCentury))] += 1
-        centuriesList = list(map(lambda key: [str(key), centuriesToLaws.get(key)], centuriesToLaws.keys()))
-        with open('StockChartByCenturies.json', 'w', encoding='UTF-8') as file:
-            json.dump(centuriesList, file)
+            dateDecade = date[:3] + "0"
+            decadesToLaws[(int(dateDecade))] += 1
+        decadesList = list(map(lambda key: [str(key), decadesToLaws.get(key)], decadesToLaws.keys()))
+        with open('StockChartByDecades.json', 'w', encoding='UTF-8') as file:
+            json.dump(decadesList, file)
         # print(locationsMapJson.min(lambda location: location))
 
 
@@ -73,7 +73,7 @@ def buildTopTen():
 def buildTopTwenteWithoutISrael():
     with open('locationsMap.json', 'r', encoding='UTF-8') as json_file:
         locationsMapJson = json.load(json_file)
-        locations = getTopK(getLawsByDate(locationsMapJson), 21)
+        locations = getTopK(getLawsByDate(locationsMapJson), 22)
         locations.pop(0)
 
         with open('TopTwenteWithoutISrael.json', 'w', encoding='UTF-8') as file:
@@ -83,7 +83,7 @@ def buildTopTwenteWithoutISrael():
 def buildDataForGraph():
     with open('locationsMap.json', 'r', encoding='UTF-8') as json_file:
         locationsMapJson = json.load(json_file)
-        locations = getTopK(getLawsByDate(locationsMapJson), 21)
+        locations = getTopK(getLawsByDate(locationsMapJson), 10)
 
         with open('dataGraph.json', 'w', encoding='UTF-8') as file:
             json.dump(locations, file)
@@ -106,6 +106,6 @@ def findMax(lst):
 
 
 
-buildDataForGraph()
-# makeIsraelStockChartByCenturies()
+# buildDataForGraph()
+# makeIsraelStockChartByDecades()
 buildTopTwenteWithoutISrael()
