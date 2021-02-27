@@ -1,9 +1,5 @@
 import codecs
-from src.DataBase import updateWord, buildWordThatHasLocTags, DataBase, apppendLocationOcc
-
-#TODO
-# things that dont work ארץ-ישראל, באר-שבע
-# work- ארץ ישראל  - it tags ישראל which is fine/
+from src.DataBase import buildWordThatHasLocTags, DataBase
 from src.dictionary import loc_dictionray
 
 
@@ -26,6 +22,13 @@ def initializeDataBase(file, dataBase):
 
 
 def getNextNonEmptyLine(lines, indx):
+    """
+    from the given index - indx, go through the list lines and return the next non empty line, if function reaches
+    the end of the list return -1
+    :param lines: list with strings
+    :param indx: index in the list lines
+    :return:
+    """
     while indx < len(lines):
         if not len(lines[indx].split()) < 3:
             return indx
@@ -35,6 +38,12 @@ def getNextNonEmptyLine(lines, indx):
 
 
 def seekLastWordDup(lines, indx):
+    """
+    check for the next duplicate word of lines[indx] if no such word exists return -1
+    :param lines: list of strings
+    :param indx: index in the list
+    :return:
+    """
     indx = getNextNonEmptyLine(lines, indx)
     if indx == -1:
         return -1
@@ -50,6 +59,13 @@ def seekLastWordDup(lines, indx):
 
 
 def updateOccurances(file, db):
+    """
+    go through the lines of the file, for each word if is part is key in the db, increment the counter in the db,
+    if the the word also appears as location in its occurrence in the file, add it's occurrence counter to the list of occurrence in the db
+    :param file: LDA tagged txt file
+    :param db: database with locations
+    :return:
+    """
     lines = file.readlines()
     indx = 0
 
@@ -68,6 +84,11 @@ def updateOccurances(file, db):
 
 
 def createDataOfLocs(filePath):
+    """
+    given the filePath create a data base that contains all the locations in the filed, occurrences in the file that
+    we want to tag and tag information we want to add.
+    :param filePath: file path for the LDA tagged file
+    """
     dataBase = DataBase()
     # file =  open(FilePath, mode='r',encoding='UTF-8').read()
     file = codecs.open(filePath, 'r', 'utf8')

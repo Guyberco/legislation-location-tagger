@@ -1,15 +1,17 @@
 import xml.etree.ElementTree as ET
 import re
 import src.stringHelper as stringHelper
-# from lawHandler import dataBase
-from env import envPath
-from src.DataBase import updateWord, buildWordThatHasLocTags, DataBase
-import codecs
-
 from src.googleTrans import checkIsLocationInTranslate
 
 
 def tagDesignatedLocations(string, locationObj, LocationKey):
+    """
+
+    :param string:the string we want to tag with locations
+    :param locationObj: object of the location key
+    :param LocationKey: the key for the location we want to tag
+    :return: tagged string with the locations we found
+    """
     index = 0
     instancesToTag = locationObj["instancesToTag"]
     locationToTagEnglish = locationObj["tagToAddEnglish"]
@@ -54,6 +56,13 @@ def createLocationOpenTag(locationToTagEnglish, locationToTagHebrew):
 
 
 def handleXml(path, pathToSave, xmlFileName, db):
+    """
+    :param path: path to the original law xml file
+    :param pathToSave: path to save the new tagged xml file
+    :param xmlFileName: name of the law file
+    :param db: database with all the locations data created for this specific xml file
+    :return:
+    """
     ET.register_namespace('', "http://docs.oasis-open.org/legaldocml/ns/akn/3.0")  # ENV VARIABLE
     fileTree = ET.parse(f"{path}/{xmlFileName}")
     fileRoot = fileTree.getroot()
@@ -66,7 +75,13 @@ def handleXml(path, pathToSave, xmlFileName, db):
 
 
 def createXmlFileFromTree(path, xmlFileName, tree):
-    # openedFile = open(f"{path}/{xmlFileName}", 'w')
+    """
+
+    :param path: path to save the xml file to
+    :param xmlFileName: the file name of the xml file we wnat to create
+    :param tree: xml parse tree for the xml file we want to create
+    :return: path for the newly created xml file
+    """
     newFileName = f"locationTagged_{xmlFileName}"
     tree.write(f"{path}/{newFileName}", encoding='UTF-8')
     return newFileName
@@ -95,6 +110,10 @@ def parseEscapeCharsInXML(filePath):
 
 
 def strip_empty_lines(s):
+    """
+    :param s: string
+    :return: s without white space in the start of the string
+    """
     indx = 0;
     for c in s:
         if indx == 0:
@@ -106,13 +125,7 @@ def strip_empty_lines(s):
             break
     return s[indx:]
 
-    # lines = s.splitlines("\n")
-    # for line in lines:
-    #     if line == ' ' or line == "\n":
-    #         lines.pop(0)
-    # while lines and not lines[0].strip():
-    #     lines.pop(0)
-    # return '\n'.join(lines)
+
 
 def extractTextFromXml(path, pathToSave, fileName):
     """

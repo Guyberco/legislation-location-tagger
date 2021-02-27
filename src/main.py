@@ -5,6 +5,10 @@ from src.taggerRunner import runTagger
 from src.xmlHandler import extractTextFromXml, handleXml, parseEscapeCharsInXML
 
 def write_list_to_file(lst):
+    """
+    given a list, write it to a file named error_files.txt
+    :param lst: list of some type
+    """
     list_to_print = '\n'.join(map(str, lst))
     error_file = open("error_files.txt", "w")
     error_file.write(list_to_print)
@@ -29,6 +33,10 @@ def getListOfFiles(dirName):
 
 
 def verifyXML(filePath):
+    """
+    given a filepath try to open it like an xml, if the file is not a proper xml file an error will occur
+    :param filePath: file path for the XML file we eant to check
+    """
     fileTree = ET.parse(filePath)
 
 def check_files():
@@ -44,6 +52,12 @@ def check_files():
 
 
 def main():
+    """
+    Main function - transforms all the input xml law files into txt files, then tags them with the LDA.
+    for each tagged law file - runs handleXml which transforms the tagged file into the final output - xml file tagged
+    with the locations
+    :return: final output of tagged laws with locations
+    """
     originalXmlPath = "../originalLaws"
     list_of_erros = []
     for filename in os.listdir("../originalLaws"):
